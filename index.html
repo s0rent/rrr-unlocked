@@ -1,0 +1,88 @@
+<html>
+<h2>Press "Browse" and load your uncompressed EUR/US Ridge Racer Revolution CD image.</h2>
+BE PATIENT - it can take a while!<br>
+For BIN/CUE rips: The file you should load might be called "Track 01.bin" or similar. Remember to update the CUE file to reference the patched .BIN file or replace the original .BIN file with the patched version.<br>
+<br>
+<input type="file" id="fileInput"/>
+<br>
+<div id="error"></div>
+<br><br><br>
+<div class="disclaimer">*No files are uploaded, but merely modified directly in your browser.</div>
+<script>
+document.getElementById('fileInput').addEventListener('change', (evt)=>{
+    const file = evt.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e)=>{
+        const arrayBuffer = e.target.result;
+        const text = new TextDecoder('ascii').decode(arrayBuffer);
+
+        const isRrrFile = text.includes('SCES_002.42') || text.includes('SLUS_002.14');
+        if(isRrrFile) {
+            document.getElementById('error').innerHTML = '';
+            const data = new Uint8Array(arrayBuffer);
+            replaceSequences(data, patterns);
+            const blob = new Blob([data], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PATCHED_'+file.name;
+            a.click();
+            URL.revokeObjectURL(url);
+        } else {
+            document.getElementById('error').innerHTML = 'Unsupported file';
+        }
+    };
+    reader.readAsArrayBuffer(file);
+});
+
+const patterns = [
+    // Tracks - Novice, intermediate, expert extra:
+    { target: [0x07, 0x00, 0x03, 0x34, 0x07, 0x00, 0x42, 0x30, 0x1C, 0x00, 0x43, 0x14], replacement: [0x07, 0x00, 0x03, 0x34, 0x07, 0x00, 0x42, 0x30, 0x1C, 0x00, 0x42, 0x14] },
+    
+    // Tracks - Special 1 & 2:
+    { target: [0x0A, 0x00, 0x60, 0x10, 0x01, 0x00, 0x84, 0x24, 0x03, 0x00, 0x02, 0x34], replacement: [0x0C, 0x00, 0x40, 0x10, 0x01, 0x00, 0x84, 0x24, 0x03, 0x00, 0x02, 0x34] },
+
+    // Tracks - Special 1 & 2 extra:
+    { target: [0x0C, 0x00, 0x60, 0x10, 0x01, 0x00, 0x84, 0x24], replacement: [0x0C, 0x00, 0x63, 0x14, 0x01, 0x00, 0x84, 0x24] },
+
+    // Cars - 8 extra:
+    { target: [0x03, 0x11, 0x02, 0x00, 0x23, 0x10, 0x43, 0x00], replacement: [0x03, 0x11, 0x02, 0x00, 0x01, 0x00, 0x02, 0x34] },
+
+    // Cars - White Angel, Kid, Devil (EUR):
+    { target: [0x88, 0xDA, 0x20, 0xA4, 0x1E, 0x80, 0x01, 0x3C, 0x58, 0xD4, 0x20, 0xA4, 0x19, 0x80, 0x01, 0x3C, 0x10, 0x52, 0x20, 0xA4, 0x1E, 0x80, 0x01, 0x3C, 0xF4, 0xD9, 0x20, 0xA4], replacement: [0x88, 0xDA, 0x30, 0xA4, 0x1E, 0x80, 0x01, 0x3C, 0x58, 0xD4, 0x20, 0xA4, 0x19, 0x80, 0x01, 0x3C, 0x10, 0x52, 0x30, 0xA4, 0x1E, 0x80, 0x01, 0x3C, 0xF4, 0xD9, 0x30, 0xA4] },
+
+    // Cars - White Angel, Kid, Devil (US):
+    { target: [0x3c, 0xd8, 0x20, 0xa4, 0x1e, 0x80, 0x01, 0x3c, 0x0c, 0xd2, 0x20, 0xa4, 0x19, 0x80, 0x01, 0x3c, 0xc4, 0x4f, 0x20, 0xa4, 0x1e, 0x80, 0x01, 0x3c, 0xa8, 0xd7, 0x20, 0xa4], replacement: [0x3c, 0xd8, 0x30, 0xa4, 0x1e, 0x80, 0x01, 0x3c, 0x0c, 0xd2, 0x20, 0xa4, 0x19, 0x80, 0x01, 0x3c, 0xc4, 0x4f, 0x30, 0xa4, 0x1e, 0x80, 0x01, 0x3c, 0xa8, 0xd7, 0x30, 0xa4] },
+];
+
+function replaceSequences(data, patterns) {
+    for (const { target, replacement } of patterns) {
+        for (let i = 0; i <= data.length - target.length; i++) {
+            let match = true;
+            for (let j = 0; j < target.length; j++) {
+                if (data[i + j] !== target[j]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                for (let j = 0; j < replacement.length; j++) {
+                    data[i + j] = replacement[j];
+                }
+                i += target.length - 1; 
+            }
+        }
+    }
+}
+</script>
+<style>
+#error {
+    color: #d00;
+}
+.disclaimer {
+    color: #888;
+    font-size: 12px;
+}
+</style>
+</html>
