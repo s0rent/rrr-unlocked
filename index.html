@@ -206,26 +206,22 @@ h3 {
     animation-direction: alternate;
 }
 html {
-    height: 100%;
-    background: var(--texture), radial-gradient(circle at center, #666 20%, #000 80%);
+    background: var(--texture), radial-gradient(circle at center, #666 20%, #040404 80%);
     background-attachment: fixed;
-    overflow-y: auto;
 }
 body {
-    display: flex;
     margin: 0;
     background: repeating-conic-gradient(#0006 0% 25%, #0000 0% 50%);
     background-size: 192px 192px;
     background-attachment: fixed;
     background-position: center center;
     background-repeat: repeat;
+    min-height: 100vh;
 }
 #content {
     max-width: 1152px;
     margin: 0 auto;
     padding: 48px 0;
-    min-height: calc(100vh - 96px);
-    height: 100%;
     width: 100vw;
 }
 .centered {
