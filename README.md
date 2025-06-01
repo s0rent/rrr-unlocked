@@ -1,12 +1,16 @@
 # Ridge Racer Revolution Unlocked
 Features (all of which are optional):
-* Unlock the two courses from the original Ridge Racer: "Seaside Route 765" and "Ridge City Highway" which are normally only accessible in two player link cable games.
+* Unlock the two hidden courses from the original Ridge Racer: "Seaside Route 765" and "Ridge City Highway" in single player mode.
 
-* Unlock all 5 courses in the "Extra" (reversed) variants.
+* Unlock all courses in the "Extra" (reversed) variants.
 
-* Unlock all 15 cars in the game, including 13th devil, 13th kid and White angel.
+* Unlock all 15 cars in the game, including the 13th devil, 13th kid and White angel.
 
-* Unlock speed level and scene (time of day) selection by marking all courses won.
+* Unlock all four car speed levels for every course and game mode.
+
+* Unlock the ability to select race scene / time of day.
+
+* Disable the race time limits (makes it possible to complete the extra courses on the lowest speed level).
 
 [Go here to patch your CD image](https://s0rent.github.io/rrr-unlocked/)
 
@@ -14,6 +18,6 @@ Features (all of which are optional):
 An uncompressed CD image with the EUR or US version of Ridge Racer Revolution.
 
 ### Disclaimer
-I have not yet verified the hacks on a console, but I expect everything to work fine. I have tested the courses and the cars in emulators, though far from all combinations of game modes, courses and cars, hence there might be bugs somewhere that I did not account for.
+I have not tested every combination of game modes, courses and cars, so there might be bugs somewhere that I did not encounter.
 
 This is my very first ROM hack, first disassembly, first experience with MIPS and PS1, etc. It probably ain't pretty, but I tried to aim for the least invasive way to perform the modifications and not having to distribute a copy of the game.
